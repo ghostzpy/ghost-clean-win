@@ -16,6 +16,11 @@ Remove arquivos temporários, executa `sfc /scannow` e limpa a lixeira com apena
 
 Siga os passos abaixo para instalar e executar o aplicativo:
 
+EXE:
+### 🧹 Baixe o Ghost Clean
+👉 [Download Ghost Clean v1.0.0](https://github.com/seu-usuario/seu-repo/releases/download/v1.0.0/Gosth%20Clean%20Setup%201.0.0.exe)
+
+MANUAL:
 ### 1. Instalar o Node.js
 
 Caso ainda não tenha instalado o Node.js:
