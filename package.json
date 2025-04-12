@@ -17,7 +17,15 @@
   "appId": "com.gosth.clean",
   "productName": "Gosth Clean",
   "win": {
-    "target": "nsis",
+    "target": [
+      {
+        "target": "nsis",
+        "arch": [
+          "x64",
+          "ia32"
+        ]
+      }
+    ],
     "icon": "gosthclean.ico",
     "requestedExecutionLevel": "requireAdministrator"
   }
@@ -25,10 +33,9 @@
   "keywords": [],
   "type": "commonjs",
   "dependencies": {
-    "@electron/remote": "^2.1.2",
-    "electron": "^35.1.5"
+    "@electron/remote": "^2.1.2"
   },
   "devDependencies": {
-    "electron-reload": "^2.0.0-alpha.1"
+    "electron": "^35.1.5"
   }
 }

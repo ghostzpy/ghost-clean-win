@@ -3,11 +3,11 @@ const remoteMain = require('@electron/remote/main');
 const path = require('path');
 const fs = require('fs');
 
-if (process.env.NODE_ENV !== 'production') {
-  require('electron-reload')(__dirname, {
-    electron: require(`${__dirname}/node_modules/electron`)
-  });
-}
+// if (process.env.NODE_ENV !== 'production') {
+//   require('electron-reload')(__dirname, {
+//     electron: require(`${__dirname}/node_modules/electron`)
+//   });
+// }
 
 // ✅ Inicializa remote
 remoteMain.initialize();
@@ -55,9 +55,9 @@ function createWindow () {
   console.log("🟢 remoteMain enabled on window");
 
   win.loadFile('index.html').then(() => {
-    if (process.env.NODE_ENV !== 'production') {
-      win.webContents.openDevTools();
-    }
+    // if (process.env.NODE_ENV !== 'production') {
+    //   win.webContents.openDevTools();
+    // }
     console.log("✅ index.html loaded");
   }).catch(err => {
     console.error("❌ Failed to load index.html:", err);
