@@ -1,0 +1,34 @@
+{
+  "name": "gosthcleanapp",
+  "version": "1.0.0",
+  "description": "App de limpeza para Windows desenvolvido com JSElectron",
+  "author": "Lucas Reis",
+  "license": "MIT",
+  "main": "main.js",
+  "companyName": "Gosth Clean Devs",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ghostzpy/ghost-clean-win.git"
+  },
+  "scripts": {
+    "start": "electron ."
+  },
+  "build": {
+  "appId": "com.gosth.clean",
+  "productName": "Gosth Clean",
+  "win": {
+    "target": "nsis",
+    "icon": "gosthclean.ico",
+    "requestedExecutionLevel": "requireAdministrator"
+  }
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "dependencies": {
+    "@electron/remote": "^2.1.2",
+    "electron": "^35.1.5"
+  },
+  "devDependencies": {
+    "electron-reload": "^2.0.0-alpha.1"
+  }
+}
