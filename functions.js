@@ -75,7 +75,111 @@ function startSFCScan() {
   });
 }
 
+function cleanSoftwareDistribution() {
+  new Notification({
+    title: 'Limpando atualizações do Windows',
+    body: 'Processo iniciado. Por favor, aguarde...'
+  }).show();
+
+  // 1. Verificar o estado atual do serviço wuauserv
+  exec('sc qc wuauserv', (error, stdout) => {
+    if (error) {
+      dialog.showErrorBox("Erro", "Não foi possível verificar o estado do serviço Windows Update.");
+      return;
+    }
+
+    const isAuto = /START_TYPE\s+: 2/.test(stdout);
+    const isManual = /START_TYPE\s+: 3/.test(stdout);
+    const originalState = isAuto ? 'auto' : isManual ? 'manual' : 'unknown';
+
+    // Salva o estado em sessionStorage
+    sessionStorage.setItem('wuauservState', originalState);
+
+    // 2. Para o serviço temporariamente
+    exec('net stop wuauserv', (stopErr) => {
+      if (stopErr) {
+        dialog.showErrorBox("Erro", "Falha ao parar o serviço Windows Update.");
+        return;
+      }
+
+      // 3. Limpa a pasta Download de SoftwareDistribution
+      exec('del /f /s /q C:\\Windows\\SoftwareDistribution\\Download\\*.*', (delErr, _, delStderr) => {
+        let resultMsg = '';
+
+        if (delErr || (delStderr && delStderr.trim() !== '')) {
+          resultMsg = 'Erro ao limpar arquivos de atualização. Verifique permissões.';
+          console.warn("Erro:", delErr || delStderr);
+        } else {
+          resultMsg = 'Arquivos de atualização antigos foram limpos com sucesso!';
+        }
+
+        // 4. Restaura o serviço ao estado original
+        let restoreCmd = '';
+        if (originalState === 'auto') {
+          restoreCmd = 'sc config wuauserv start= auto && net start wuauserv';
+        } else if (originalState === 'manual') {
+          restoreCmd = 'sc config wuauserv start= demand';
+        }
+
+        exec(restoreCmd, () => {
+          // Remove do sessionStorage
+          sessionStorage.removeItem('wuauservState');
+
+          dialog.showMessageBox({
+            type: delErr ? 'warning' : 'info',
+            buttons: ['OK'],
+            message: resultMsg
+          });
+        });
+      });
+    });
+  });
+}
+
+function openCleanMgr() {
+  dialog.showMessageBox({
+    type: 'info',
+    buttons: ['OK'],
+    title: 'Limpeza de Disco',
+    message: 'O utilitário de limpeza de disco do Windows será aberto.\n\nSelecione a unidade que deseja limpar.'
+  }).then(() => {
+    exec('cleanmgr', { windowsHide: true }, (error) => {
+      if (error) {
+        dialog.showErrorBox("Erro ao abrir o Cleanmgr", error.message);
+      }
+    });
+  });
+}
+
+function cleanWinLogs() {
+  // 🔔 Notificação rápida, não bloqueante
+  new Notification({
+    title: 'Iniciando limpeza',
+    body: 'A limpeza das Logs está sendo realizada. Por favor, aguarde...'
+  }).show();
+
+  const commands = [
+    'del /f /s /q C:\\Windows\\Logs\\*',
+    'del /f /s /q C:\\Windows\\System32\\LogFiles\\*'
+  ];  
+
+  let completed = 0;
+
+  commands.forEach(cmd => {
+    exec(cmd, { windowsHide: true }, (error, stdout, stderr) => {
+      completed++;
+      if (error) console.warn(`Erro ao executar: ${cmd}\n${error}`);
+      if (completed === commands.length) {
+        askToEmptyRecycleBin();
+      }
+    });
+  });
+}
+
 module.exports = {
   cleanTemporaryFolders,
-  startSFCScan
+  startSFCScan,
+  cleanSoftwareDistribution,
+  openCleanMgr,
+  cleanWinLogs
 };

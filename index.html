@@ -4,16 +4,37 @@
   <meta charset="UTF-8">
   <title>Gosth Clean</title>
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="theme.css">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap');
+  </style>
 </head>
 <body>
   <div id="window-controls" class="window-controls">
-      <button id="close-btn" class="close-btn">✕</button>
+      <button id="close-btn" class="close-btn" style="z-index: 100;">✕</button>
   </div>
-  <h1>GOSTH CLEAN</h1>
+  <h1 class="bebas-neue-regular">GOSTH CLEAN</h1>
+
+  <!-- From Uiverse.io by reglobby --> 
+<div class="grid-plane">
+  <div class="nebula"></div>
+</div> 
+  <div class="holo-particles">
+    <div class="holo-particle"></div>
+    <div class="holo-particle"></div>
+    <div class="holo-particle"></div>
+    <div class="holo-particle"></div>
+    <div class="holo-particle"></div>
+    <div class="holo-particle"></div>
+  </div>
 
   <button id="clean-btn" class="main-button">Limpar</button>
   <button id="sfcnow-btn" class="main-button">Verificação de arquivos</button>
   <button id="shortcuts-btn" class="main-button">Abrir Atalhos do Menu Iniciar</button>
+  <button id="oldupdates-btn" class="main-button">Limpar Atualizações passadas do Windows</button>
+  <button id="cleanmgr-btn" class="main-button">Abrir limpeza do Windows</button>
+  <button id="cleanwinlogs-btn" class="main-button">Limpar logs do Windows</button>
+  <button id="initapps-btn" class="main-button">Aplicativos da inicialização</button>
   <button id="settings-btn" class="main-button">Configurações</button>
 
   <script src="renderer.js"></script>

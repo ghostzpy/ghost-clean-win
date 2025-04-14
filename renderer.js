@@ -1,9 +1,10 @@
 const { shell } = require('electron');
 const { app, getCurrentWindow, BrowserWindow, screen } = require('@electron/remote');
 const path = require('path');
-const { cleanTemporaryFolders, startSFCScan } = require('./functions');
+const { cleanTemporaryFolders, startSFCScan, cleanSoftwareDistribution, openCleanMgr, cleanWinLogs } = require('./functions');
 
 let configWin = null;
+let initappsWindow = null;
 
 window.addEventListener('DOMContentLoaded', () => {
   // Aplica opacidade salva ao body
@@ -16,23 +17,34 @@ window.addEventListener('DOMContentLoaded', () => {
   const sfcBtn = document.getElementById("sfcnow-btn");
   const shortcutsBtn = document.getElementById("shortcuts-btn");
   const settingsBtn = document.getElementById("settings-btn");
+  const oldupdatesBtn = document.getElementById("oldupdates-btn");
+  const openCleanMgrBtn = document.getElementById("cleanmgr-btn");
+  const cleanWinLogsBtn = document.getElementById("cleanwinlogs-btn");
+  const initappsBtn = document.getElementById("initapps-btn");
 
   // Botão fechar app
   closeBtn?.addEventListener("click", () => {
-    console.log("❌ Fechando app completo...");
     app.quit();
   });
 
   // Botão limpeza
   cleanBtn?.addEventListener("click", () => {
-    console.log("🧹 Iniciando limpeza...");
     cleanTemporaryFolders();
   });
 
   // Botão sfc
   sfcBtn?.addEventListener("click", () => {
-    console.log("🔍 Iniciando verificação SFC...");
     startSFCScan();
+  });
+
+  // Botão opencleanmgr
+  openCleanMgrBtn?.addEventListener("click", () => {
+    openCleanMgr();
+  });
+
+  // Botão opencleanmgr
+  cleanWinLogsBtn?.addEventListener("click", () => {
+    cleanWinLogs();
   });
 
   // Botão Atalhos
@@ -48,27 +60,73 @@ window.addEventListener('DOMContentLoaded', () => {
       });
   });
 
+    // Botão Old Updates
+    oldupdatesBtn?.addEventListener("click", () => {
+      cleanSoftwareDistribution();
+    });
+
   // Botão configurações
   settingsBtn?.addEventListener("click", () => {
     if (configWin && !configWin.isDestroyed()) {
-      console.log("🔄 Janela de configurações já está aberta. Focando...");
       configWin.focus();
       return;
     }
-
+  
     const mainWin = getCurrentWindow();
     const [x, y] = [mainWin.getBounds().x, mainWin.getBounds().y];
     const [width, height] = [600, 400];
     const newX = x + 50;
     const newY = y + 50;
-
+  
     console.log("⚙️ Criando nova janela de configurações...");
-
+  
     configWin = new BrowserWindow({
       width,
       height,
       x: newX,
       y: newY,
+      title: "Gosth Clean - Configurações",
+      frame: false,
+      resizable: false,
+      transparent: true,
+      vibrancy: 'dark',
+      backgroundColor: '#00000000',
+      webPreferences: {
+        nodeIntegration: true,
+        contextIsolation: false,
+        enableRemoteModule: true
+      }
+    });
+  
+    configWin.loadFile(path.join(__dirname, 'config.html'));
+  
+    configWin.on('closed', () => {
+      configWin = null;
+    });
+  });
+  
+
+  // Botão initappsBtn
+  initappsBtn?.addEventListener("click", () => {
+    if (initappsWindow && !initappsWindow.isDestroyed()) {
+      initappsWindow.focus();
+      return;
+    }
+
+    const mainWin = getCurrentWindow();
+    const [x, y] = [mainWin.getBounds().x, mainWin.getBounds().y];
+    const [width, height] = [600, 600];
+    const newX = x + 50;
+    const newY = y + 50;
+
+    console.log("Criando nova janela de initappsBtn...");
+
+    initappsWindow = new BrowserWindow({
+      width,
+      height,
+      x: newX,
+      y: newY,
+      title: "Gosth Clean - Aplicativos de Inicialização",
       frame: false,
       resizable: false,
       transparent: true,
@@ -81,10 +139,10 @@ window.addEventListener('DOMContentLoaded', () => {
       }
     });
 
-    configWin.loadFile(path.join(__dirname, 'config.html'));
+    initappsWindow.loadFile(path.join(__dirname, 'initApps.html'));
 
-    configWin.on('closed', () => {
-      configWin = null;
+    initappsWindow.on('closed', () => {
+      initappsWindow = null;
     });
   });
 });

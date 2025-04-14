@@ -14,28 +14,30 @@
     "start": "electron ."
   },
   "build": {
-  "appId": "com.gosth.clean",
-  "productName": "Gosth Clean",
-  "win": {
-    "target": [
-      {
-        "target": "nsis",
-        "arch": [
-          "x64",
-          "ia32"
-        ]
-      }
-    ],
-    "icon": "gosthclean.ico",
-    "requestedExecutionLevel": "requireAdministrator"
-  }
+    "appId": "com.gosth.clean",
+    "productName": "Gosth Clean",
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64",
+            "ia32"
+          ]
+        }
+      ],
+      "icon": "gosthclean.ico",
+      "requestedExecutionLevel": "requireAdministrator"
+    }
   },
   "keywords": [],
   "type": "commonjs",
   "dependencies": {
-    "@electron/remote": "^2.1.2"
-  },
-  "devDependencies": {
-    "electron": "^35.1.5"
+    "@electron/remote": "^2.1.2",
+    "extract-file-icon": "^0.3.2",
+    "fs": "^0.0.1-security",
+    "is-elevated": "^4.0.0",
+    "sudo-prompt": "^9.2.1",
+    "winreg": "^1.2.5"
   }
 }

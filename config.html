@@ -10,12 +10,18 @@
     <button id="close-config-btn" class="close-btn">✕</button>
   </div>
 
-  <h1>GOSTH CLEAN</h1>
-  <h1>CONFIGURAÇÕES</h1>
+  <h1 class="bebas-neue-regular" style="font-size: 30px; text-align: center;"><strong>GOSTH CLEAN</strong><br>CONFIGURAÇÕES</h1>
 
   <div class="setting">
-    <label for="opacity-range">Transparência do fundo: <span id="opacity-value">60%</span></label><br>
+    <label for="opacity-range">Transparência do fundo: <span id="opacity-value">60%</span></label>
+    <br>
     <input type="range" id="opacity-range" min="20" max="100" value="60">
+    <br><br>
+    <label class="listforinit-item-container-checkbox" for="reduce-animations" style="text-align: center; align-items: center; margin-left: 1px;">
+      <input type="checkbox" id="reduce-animations">
+      <div class="listforinit-item-container-checkbox-checkmark"></div>Reduzir Animações
+    </label>
+
   </div>
 
   <script src="config.js"></script>
